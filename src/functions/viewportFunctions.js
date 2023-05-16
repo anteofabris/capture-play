@@ -1,15 +1,19 @@
 const init = async (width, height) => {
+  // show which constraints are supported by browser
+  // console.log(
+  //   "supported: ",
+  //   navigator.mediaDevices.getSupportedConstraints()
+  // );
   try {
     const stream = await navigator.mediaDevices.getUserMedia({
-      video: {
-        mandatory: {
-          minWidth: width,
-          minHeight: height,
-          maxWidth: width,
-          maxHeight: height,
-          frameRate: { min: 1, max: 1 },
-        },
-      },
+      // video: {
+      //   mandatory: {
+      //     minWidth: width,
+      //     minHeight: height,
+      //     maxWidth: width,
+      //     maxHeight: height,        },
+      // },
+      video: true,
       audio: false,
     });
     return stream;

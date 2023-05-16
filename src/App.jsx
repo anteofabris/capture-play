@@ -46,13 +46,13 @@ function buildInstruments(height) {
   return instruments;
 }
 // const asciiValues = " .o*O0@"
-const asciiValues = "@B0OQ#*qdoc/|()1{}[]I?i!l-_+~<>;:,\"^`'. "
-  .split("")
-  .reverse();
+// const asciiValues = " .co*OQ0@"
+const asciiValues = "@B0OQ#*qdoc/|()1{}[]I?i!l-_+~<>;:,\"^`'. ".split("");
+
 const width = 200;
 const height = 80;
 const pixelFactor = 1;
-const tempo = 3;
+const tempo = 20;
 const synths = buildInstruments(height);
 function App() {
   const [stream, setStream] = useState("");
@@ -70,7 +70,6 @@ function App() {
   }, []);
 
   const handleCapture = () => {
-    // globalTransport.start();
     capture(pixelFactor);
     getAscii(width, height, asciiValues)
       .then((res) => {
@@ -82,10 +81,7 @@ function App() {
     <div>
       <Button
         onClick={() => {
-          // handleCapture();
-          // globalTransport.stop(0);
-          // globalTransport.clear(0);
-
+          handleCapture(); // immediately triggers first image
           setInterval(() => handleCapture(), tempo * 1000);
         }}
       >
