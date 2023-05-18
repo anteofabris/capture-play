@@ -1,5 +1,5 @@
 const createVolumeObj = (characterArray, rangeArray, leftToRight) => {
-  if (!leftToRight) characterArray = characterArray.reverse();
+  if (!leftToRight) characterArray = characterArray.reverse; // .reverse() for inverse vol
   const lv = rangeArray[0];
   const hv = rangeArray[1];
   let result = { " ": -Infinity };
@@ -48,7 +48,7 @@ export function playFileOnce(
   }
 
   function playImage(length, chordObj, pitches, instr) {
-    const volumes = createVolumeObj(asciiValues, [-120, -20], true);
+    const volumes = createVolumeObj(asciiValues, [-20, -120], true);
     let sampleCount = width - 1;
     const playLoop = (sampleCount) => {
       for (let key in chordObj) {
@@ -57,16 +57,14 @@ export function playFileOnce(
       }
       sampleCount--;
       if (sampleCount === 0) {
-        console.log('done')
-        for (let key in instr) {
-          instr[key].stop();
-        }
+        console.log("done");
         return;
       }
       return setTimeout(() => {
         playLoop(sampleCount - 1);
-      }, (tempo * 1000) / width);
+      }, (tempo * 1000) / width); // larger increments to make seamless loop
     };
+    console.log("playing");
     playLoop(sampleCount);
   }
   const matrix = convertToMatrix(file);

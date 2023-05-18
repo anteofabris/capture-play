@@ -38,13 +38,6 @@ const convertToGrayScales = (canvas, width, height) => {
   return grayScales;
 };
 
-const grayRamp = "@B0OQ#*qdoc/|()1{}[]I?i!l-_+~<>;:,\"^`'. "
-  .split("")
-  .reverse()
-  .join("");
-// "@#&%*(/., ".split('').reverse().join('');
-const rampLength = grayRamp.length;
-
 // the grayScale value is an integer ranging from 0 (black) to 255 (white)
 const getCharacterForGrayScale = (grayScale, asciiValues) =>
   asciiValues[Math.ceil(((asciiValues.length - 1) * grayScale) / 255)];

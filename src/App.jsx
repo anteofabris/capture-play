@@ -16,8 +16,8 @@ class Instrument {
         attack: 0.7,
         attackCurve: "exponential",
         decayCurve: "exponential",
-        sustain: 0,
-        decay: 8,
+        sustain: 0.1,
+        decay: 0.2,
       },
     }).toDestination();
   }
@@ -25,13 +25,13 @@ class Instrument {
   play(freq, vol, msDelay) {
     const salt = Math.random();
     this.synth.volume.value = vol;
-    this.synth.triggerAttackRelease(freq, 3);
+    this.synth.triggerAttackRelease(freq);
   }
 
   playPattern(freqArr, vol, msDelay) {
     const defaultDelay = 0.5;
     this.synth.volume.value = vol;
-    this.synth.triggerAttackRelease(freqArr[0], 3);
+    this.synth.triggerAttackRelease(freqArr[0]);
   }
   stop() {
     this.synth.triggerRelease(0);
@@ -52,7 +52,7 @@ const asciiValues = "@B0OQ#*qdoc/|()1{}[]I?i!l-_+~<>;:,\"^`'. ".split("");
 const width = 200;
 const height = 80;
 const pixelFactor = 1;
-const tempo = 20;
+const tempo = 3;
 const synths = buildInstruments(height);
 function App() {
   const [stream, setStream] = useState("");
@@ -70,9 +70,11 @@ function App() {
   }, []);
 
   const handleCapture = () => {
+    console.log("handlecap");
     capture(pixelFactor);
     getAscii(width, height, asciiValues)
       .then((res) => {
+        console.log('got ascii')
         setAscii(res);
       })
       .catch((err) => console.log("err in app: ", err));
@@ -82,7 +84,10 @@ function App() {
       <Button
         onClick={() => {
           handleCapture(); // immediately triggers first image
-          setInterval(() => handleCapture(), tempo * 1000);
+          setInterval(() => {
+            console.log("fire");
+            handleCapture();
+          }, (tempo - 1) * 1000);
         }}
       >
         Capture

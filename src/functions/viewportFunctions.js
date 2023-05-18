@@ -6,13 +6,14 @@ const init = async (width, height) => {
   // );
   try {
     const stream = await navigator.mediaDevices.getUserMedia({
-      // video: {
-      //   mandatory: {
-      //     minWidth: width,
-      //     minHeight: height,
-      //     maxWidth: width,
-      //     maxHeight: height,        },
-      // },
+      video: {
+        // mandatory: {
+        //   minWidth: width,
+        //   minHeight: height,
+        //   maxWidth: width,
+        //   maxHeight: height,
+        // },
+      },
       video: true,
       audio: false,
     });
