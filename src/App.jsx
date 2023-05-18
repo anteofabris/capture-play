@@ -51,7 +51,7 @@ const asciiValues = "@B0OQ#*qdoc/|()1{}[]I?i!l-_+~<>;:,\"^`'. ".split("");
 
 const width = 200;
 const height = 80;
-const pixelFactor = 1;
+const pixelFactor = 1; // better way to do this directly in getUserMedia
 const tempo = 3;
 const synths = buildInstruments(height);
 function App() {
@@ -62,7 +62,6 @@ function App() {
   useEffect(() => {
     init(width, height)
       .then((res) => {
-        console.log("streaming");
         setStream(res);
         window.stream = stream;
       })
@@ -70,11 +69,9 @@ function App() {
   }, []);
 
   const handleCapture = () => {
-    console.log("handlecap");
     capture(pixelFactor);
     getAscii(width, height, asciiValues)
       .then((res) => {
-        console.log('got ascii')
         setAscii(res);
       })
       .catch((err) => console.log("err in app: ", err));
@@ -85,7 +82,6 @@ function App() {
         onClick={() => {
           handleCapture(); // immediately triggers first image
           setInterval(() => {
-            console.log("fire");
             handleCapture();
           }, (tempo - 1) * 1000);
         }}

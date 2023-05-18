@@ -57,14 +57,12 @@ export function playFileOnce(
       }
       sampleCount--;
       if (sampleCount === 0) {
-        console.log("done");
         return;
       }
       return setTimeout(() => {
         playLoop(sampleCount - 1);
       }, (tempo * 1000) / width); // larger increments to make seamless loop
     };
-    console.log("playing");
     playLoop(sampleCount);
   }
   const matrix = convertToMatrix(file);
