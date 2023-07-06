@@ -1,7 +1,7 @@
 # capture-play
-video camera records, turns data into ASCII values, plays values sonographically
+This app records images from your webcam, turns the image into ASCII values, and plays the values sonographically.
 
-This app is built using vite. Just run:
+It was built using vite. Just run:
 
 npm install
 npm run dev
