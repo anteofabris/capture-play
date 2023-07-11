@@ -21,7 +21,7 @@ class Instrument {
   }
 
   play(freq, vol, incomingNow) {
-    const now = Tone.now()
+    const now = Tone.now();
     const salt = Math.random();
     this.synth.volume.value = vol;
     this.synth.triggerAttackRelease(freq, 1);
@@ -75,6 +75,14 @@ function App() {
       })
       .catch((err) => console.log("err in app: ", err));
   };
+  const handleImages = (num) => {
+    capture(pixelFactor, num);
+    getAscii(width, height, asciiValues)
+      .then((res) => {
+        setAscii(res);
+      })
+      .catch((err) => console.log("err in app: ", err));
+  };
   return (
     <div>
       <Button
@@ -86,6 +94,18 @@ function App() {
         }}
       >
         Capture
+      </Button>
+      <Button
+        onClick={() => {
+          const count = 0;
+          handleImages(count); // immediately triggers first image
+          setInterval(() => {
+            count++;
+            handleImages(count);
+          }, tempo * 1000);
+        }}
+      >
+        IMAGE
       </Button>
       <Button
         onClick={() => {

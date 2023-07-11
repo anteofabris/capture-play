@@ -1,5 +1,5 @@
 import crashWaves from "../assets/wavesCrashing.jpeg";
-
+import clouds from '../assets/IMG_7465.jpg'
 const init = async (width, height) => {
   // show which constraints are supported by browser
   // console.log(
@@ -24,8 +24,9 @@ const init = async (width, height) => {
     throw new Error(`error: ${err}`);
   }
 };
-
-const capture = (pixelFactor) => {
+const pictureArray = [clouds, crashWaves]
+const capture = (pixelFactor, num) => {
+  console.log('NUM: ', num)
   const canvas = document.getElementById("canvas_main");
   const video = document.getElementById("video_main");
   const img = document.getElementById("img_main");
@@ -34,19 +35,21 @@ const capture = (pixelFactor) => {
   console.log * ("w & h", video.videoWidth, video.videoHeight);
   canvas
     .getContext("2d")
-    .drawImage(
-      video,
-      0,
-      0,
-      video.videoWidth / pixelFactor,
-      video.videoHeight / pixelFactor
-    );
+    // .drawImage(
+    //   video,
+    //   0,
+    //   0,
+    //   video.videoWidth / pixelFactor,
+    //   video.videoHeight / pixelFactor
+    // );
+    .drawImage(img, 0,0)
 
   canvas.toBlob((blob) => {
-    const img = new Image();
+    const img = pictureArray[num];
     img.src = window.URL.createObjectURL(blob);
   });
   img.src = canvas.toDataURL("image/png");
+  img.src = pictureArray[num];
 
   return img.src;
 };
