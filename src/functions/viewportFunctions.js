@@ -1,3 +1,5 @@
+import crashWaves from "../assets/wavesCrashing.jpeg";
+
 const init = async (width, height) => {
   // show which constraints are supported by browser
   // console.log(
@@ -7,14 +9,14 @@ const init = async (width, height) => {
   try {
     const stream = await navigator.mediaDevices.getUserMedia({
       video: {
-        // mandatory: {
-        //   minWidth: width,
-        //   minHeight: height,
-        //   maxWidth: width,
-        //   maxHeight: height,
-        // },
+        mandatory: {
+          minWidth: width,
+          minHeight: height,
+          maxWidth: width,
+          maxHeight: height,
+        },
       },
-      video: true,
+      // video: true,
       audio: false,
     });
     return stream;
@@ -29,6 +31,7 @@ const capture = (pixelFactor) => {
   const img = document.getElementById("img_main");
   canvas.width = video.videoWidth;
   canvas.height = video.videoHeight;
+  console.log * ("w & h", video.videoWidth, video.videoHeight);
   canvas
     .getContext("2d")
     .drawImage(
@@ -38,6 +41,7 @@ const capture = (pixelFactor) => {
       video.videoWidth / pixelFactor,
       video.videoHeight / pixelFactor
     );
+
   canvas.toBlob((blob) => {
     const img = new Image();
     img.src = window.URL.createObjectURL(blob);

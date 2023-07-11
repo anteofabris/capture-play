@@ -82,7 +82,7 @@ export function playFilePattern(
     // const values = [" ", ".", ",", "/", "(", "*", "%", "&", "#", "@"]
     let values = "@B0OQ#*qdoc/|()1{}[]I?i!l-_+~<>;:,\"^`'. "
       .split("")
-      .reverse();
+      // .reverse();
     // .split("").reverse().join(""); // if it's dark out, reverse it
 
     const volumes = createVolumeObj(values, [-120, -20], true);

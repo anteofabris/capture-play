@@ -1,8 +1,10 @@
+import * as Tone from "tone";
+
 const createVolumeObj = (characterArray, rangeArray, leftToRight) => {
-  if (!leftToRight) characterArray = characterArray.reverse; // .reverse() for inverse vol
+  if (!leftToRight) characterArray = characterArray; // .reverse() for inverse vol
   const lv = rangeArray[0];
   const hv = rangeArray[1];
-  let result = { " ": -Infinity };
+  let result = { [`${characterArray[0]}`]: -Infinity };
   const hvZero = hv - lv;
   const interval = hvZero / (characterArray.length - 1);
   for (let i = 0; i < characterArray.length; i++) {
@@ -52,8 +54,9 @@ export function playFileOnce(
     let sampleCount = width - 1;
     const playLoop = (sampleCount) => {
       for (let key in chordObj) {
+        const now = Tone.now();
         const volume = volumes[chordObj[key][sampleCount]];
-        instr[key].play(pitches[key], volume, 0);
+        instr[key].play(pitches[key], volume - sampleCount / 200, now);
       }
       sampleCount--;
       if (sampleCount === 0) {
@@ -61,7 +64,7 @@ export function playFileOnce(
       }
       return setTimeout(() => {
         playLoop(sampleCount - 1);
-      }, (tempo * 1000) / width); // larger increments to make seamless loop
+      }, ((tempo + 1) * 1000) / width); // larger increments to make seamless loop
     };
     playLoop(sampleCount);
   }

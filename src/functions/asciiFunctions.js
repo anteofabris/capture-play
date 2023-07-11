@@ -17,6 +17,7 @@ const toGrayScale = (r, g, b) => 0.21 * r + 0.72 * g + 0.07 * b;
 const convertToGrayScales = (canvas, width, height) => {
   const context = canvas.getContext("2d");
   const imageData = context.getImageData(0, 0, width, height);
+  // console.log("IMAGE DATA: ", imageData);
 
   const grayScales = [];
   // increment i by pixel order
@@ -45,11 +46,9 @@ const getCharacterForGrayScale = (grayScale, asciiValues) =>
 const drawAscii = (grayScales, width, asciiValues) => {
   const ascii = grayScales.reduce((asciiImage, grayScale, index) => {
     let nextChars = getCharacterForGrayScale(grayScale, asciiValues);
-
     if ((index + 1) % width === 0) {
       nextChars += "\n";
     }
-
     return asciiImage + nextChars;
   }, "");
   return ascii;
