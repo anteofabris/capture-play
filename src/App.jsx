@@ -6,6 +6,7 @@ import { init, capture } from "./functions/viewportFunctions";
 import { stop } from "./playFilePattern";
 import { getAscii } from "./functions/asciiFunctions";
 import { getWeatherData } from "./functions/getWeatherData";
+import { testWeatherData } from "../testWeatherData";
 import "./App.css";
 
 class Instrument {
@@ -57,7 +58,7 @@ const synths = buildInstruments(height);
 function App() {
   const [stream, setStream] = useState("");
   const [ascii, setAscii] = useState("");
-  const [weatherData, setWeatherData] = useState({});
+  const [weatherData, setWeatherData] = useState(testWeatherData.Copenhagen);
   const instruments = useRef(synths);
   const [globalTransport, setGlobalTransport] = useState(Tone.Transport);
   useEffect(() => {
@@ -67,6 +68,7 @@ function App() {
         window.stream = stream;
       })
       .catch((err) => console.log("err! ", err));
+    // get weather data
     getWeatherData()
       .then((res) => setWeatherData(res))
       .catch((err) => console.log("err getting weather: ", err));
