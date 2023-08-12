@@ -48,8 +48,8 @@ function buildInstruments(height) {
 }
 // const asciiValues = " .o*O0@"
 // const asciiValues = " .co*OQ0@"
-const asciiValues = "@B0OQ#*qdoc/|()1{}[]I?i!l-_+~<>;:,\"^`'. ".split("");
-const width = 200;
+const asciiValues = "@B0OQ#*qdoc/|()1{}[]I?i!l-_+~<>;:,\"^`'. ".split("")
+const width = 600;
 const height = 80;
 const pixelFactor = 1; // better way to do this directly in getUserMedia
 const tempo = 9;
@@ -66,6 +66,10 @@ function App() {
       .then((res) => {
         setStream(res);
         window.stream = stream;
+        // set tempo --> temperature in celsius absolute value
+        // set ascii depth --> visibility in kilometers scaled to 1-11
+        // set timbre ? air pressure
+        // set reverb ? humidity
       })
       .catch((err) => console.log("err! ", err));
     // get weather data

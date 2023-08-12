@@ -17,13 +17,20 @@ const init = async (width, height) => {
       video: true,
       audio: false,
     });
-    return stream;
+    const track = stream.getVideoTracks()[0];
+    const capabilities = track.getCapabilities();
+    if (!capabilities.contrast) {
+      console.log("nope.. ", capabilities);
+      return stream;
+    }
+    track.applyConstraints({ advanced: [{ contrast: 100 }] });
+
+    return track;
   } catch (err) {
     throw new Error(`error: ${err}`);
   }
 };
 const capture = (pixelFactor, num) => {
-  console.log("NUM: ", num);
   const canvas = document.getElementById("canvas_main");
   const video = document.getElementById("video_main");
   const img = document.getElementById("img_main");

@@ -1,7 +1,7 @@
 import * as Tone from "tone";
 
 const createVolumeObj = (characterArray, rangeArray, leftToRight) => {
-  if (!leftToRight) characterArray = characterArray; // .reverse() for inverse vol
+  if (!leftToRight) characterArray = characterArray.reverse(); // for inverse vol
   const lv = rangeArray[0];
   const hv = rangeArray[1];
   let result = { [`${characterArray[0]}`]: -Infinity };
@@ -44,13 +44,14 @@ export function playFileOnce(
     const hfZero = hf - lf;
     for (let i = 1; i < length; i++) {
       const ratioIncrease = returnObj[i - 1] * 1.05945946;
+      // const ratioIncrease = returnObj[i - 1] + length / (hf - lf);
       returnObj[i] = ratioIncrease;
     }
     return returnObj;
   }
 
   function playImage(length, chordObj, pitches, instr) {
-    const volumes = createVolumeObj(asciiValues, [-20, -120], true);
+    const volumes = createVolumeObj(asciiValues, [-120, -20], true);
     let sampleCount = width - 1;
     const playLoop = (sampleCount) => {
       for (let key in chordObj) {
