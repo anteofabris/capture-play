@@ -48,13 +48,24 @@ function buildInstruments(height) {
 }
 // const asciiValues = " .o*O0@"
 // const asciiValues = " .co*OQ0@"
-const asciiValues = "@B0OQ#*qdoc/|()1{}[]I?i!l-_+~<>;:,\"^`'. ".split("")
+const asciiValues = "@B0OQ#*qdoc/|()1{}[]I?i!l-_+~<>;:,\"^`'. ".split("");
+const tempo = 9;
 const width = 600;
 const height = 80;
 const pixelFactor = 1; // better way to do this directly in getUserMedia
-const tempo = 9;
 const dbRange = [-140, -48];
-const synths = buildInstruments(height);
+// const synths = buildInstruments(height);
+let synths;
+
+const normalize = (x, xRange, newRange) => {
+  const a = newRange[0];
+  const b = newRange[1];
+  const minX = xRange[0];
+  const maxX = xRange[1];
+  const res = a + ((x - minX) * (b - a)) / (maxX - minX);
+  return res;
+};
+
 function App() {
   const [stream, setStream] = useState("");
   const [ascii, setAscii] = useState("");
@@ -64,12 +75,9 @@ function App() {
   useEffect(() => {
     init(width, height)
       .then((res) => {
+        synths = buildInstruments(height);
         setStream(res);
         window.stream = stream;
-        // set tempo --> temperature in celsius absolute value
-        // set ascii depth --> visibility in kilometers scaled to 1-11
-        // set timbre ? air pressure
-        // set reverb ? humidity
       })
       .catch((err) => console.log("err! ", err));
     // get weather data
