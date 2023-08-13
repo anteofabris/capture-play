@@ -46,16 +46,6 @@ function buildInstruments(height) {
   }
   return instruments;
 }
-// const asciiValues = " .o*O0@"
-// const asciiValues = " .co*OQ0@"
-const asciiValues = "@B0OQ#*qdoc/|()1{}[]I?i!l-_+~<>;:,\"^`'. ".split("");
-const tempo = 9;
-const width = 600;
-const height = 80;
-const pixelFactor = 1; // better way to do this directly in getUserMedia
-const dbRange = [-140, -48];
-// const synths = buildInstruments(height);
-let synths;
 
 const normalize = (x, xRange, newRange) => {
   const a = newRange[0];
@@ -66,24 +56,60 @@ const normalize = (x, xRange, newRange) => {
   return res;
 };
 
+const weatherData =
+  testWeatherData[Math.round(Math.random() * (testWeatherData.length - 1))];
+const asciiPool = "@B0OQ#*qdoc/|()1{}[]I?i!l-_+~<>;:,\"^`'. ".split("");
+const visFactor = Math.round(
+  normalize(weatherData.current.vis_km, [20, 0], [1, 5])
+);
+const asciiValues = asciiPool.filter((x, i) => i % visFactor === 0);
+const tempo = normalize(weatherData.current.temp_c, [-60, 60], [1, 12]);
+// const tempo = 9;
+// const width = 600;
+const width = Math.round(
+  normalize(
+    weatherData.forecast.forecastday[0].day.maxtemp_f,
+    [-76, 140],
+    [50, 200]
+  )
+);
+// const height = 80;
+const height = Math.round(
+  normalize(
+    weatherData.forecast.forecastday[0].day.mintemp_f,
+    [-76, 140],
+    [10, 80]
+  )
+);
+console.log("manipulated data: ", {
+  visibility: weatherData.current.vis_km,
+  visFactor,
+  weatherData,
+  asciiValues,
+  width,
+  height,
+  tempo,
+});
+const pixelFactor = 1; // better way to do this directly in getUserMedia
+// const dbRange = [-140, -48];
+const synths = buildInstruments(height);
+
 function App() {
   const [stream, setStream] = useState("");
   const [ascii, setAscii] = useState("");
-  const [weatherData, setWeatherData] = useState(testWeatherData.Copenhagen);
   const instruments = useRef(synths);
   const [globalTransport, setGlobalTransport] = useState(Tone.Transport);
   useEffect(() => {
     init(width, height)
       .then((res) => {
-        synths = buildInstruments(height);
         setStream(res);
         window.stream = stream;
       })
       .catch((err) => console.log("err! ", err));
     // get weather data
-    getWeatherData()
-      .then((res) => setWeatherData(res))
-      .catch((err) => console.log("err getting weather: ", err));
+    // getWeatherData()
+    //   .then((res) => setWeatherData(res))
+    //   .catch((err) => console.log("err getting weather: ", err));
   }, []);
 
   const handleCapture = () => {

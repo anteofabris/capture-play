@@ -26,14 +26,14 @@ const getWeatherData = async () => {
   };
   const placeKey =
     Object.keys(zipcodeObject)[
-      Math.round(Math.random() * Object.keys(zipcodeObject).length - 1)
+      Math.round(Math.random() * (Object.keys(zipcodeObject).length - 1))
     ];
   console.log("place key: ", placeKey);
   const options = {
     method: "GET",
     url: `http://api.weatherapi.com/v1/forecast.json?key=${
       import.meta.env.VITE_WEATHER_API_KEY
-    }&q=${zipcodeObject[placeKey]}&aqi=yes&days=1&hour=1`,
+    }&q=${zipcodeObject.tamdjert}&aqi=yes&days=1&hour=1`,
   };
   let res;
   try {
