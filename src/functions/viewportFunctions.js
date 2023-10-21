@@ -20,7 +20,6 @@ const init = async (width, height) => {
     const track = stream.getVideoTracks()[0];
     const capabilities = track.getCapabilities();
     if (!capabilities.contrast) {
-      console.log("nope.. ", capabilities);
       return stream;
     }
     track.applyConstraints({ advanced: [{ contrast: 100 }] });

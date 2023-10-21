@@ -13,12 +13,14 @@ const Viewport = ({
   width,
   height,
   tempo,
+  nearestFreqVal,
+  lowFreq,
+  hiFreq
 }) => {
-  const lowFreq = 80;
-  const hiFreq = 3600;
+
   useEffect(() => {
     if (ascii !== "")
-      playFileOnce(asciiValues, ascii, lowFreq, hiFreq, tempo, instruments); // light/dark reverse asciiValues
+      playFileOnce(asciiValues, ascii, lowFreq, hiFreq, tempo, instruments, nearestFreqVal); // light/dark reverse asciiValues
   }, [ascii]);
 
   if (stream) {

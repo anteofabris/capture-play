@@ -23,6 +23,12 @@ const getWeatherData = async () => {
     tamdjert: "25.616563438983285, 7.318294740071687",
     nairobi: "-1.3058009788013505, 36.801634144402776",
     fairbanks: "64.83681706159734, -147.69827979159103",
+    tuktoyaktuk: "69.45817935678217, -133.0363938616499",
+    quito: "-0.17766625344520195, -78.47449608306017",
+    canutama: "-6.530289110066499, -64.3869356051171",
+    puertoWilliams: "-54.93585964250155, -67.60755820854331",
+    gqeberha: "-34.00364570249156, 25.61504717445475",
+    alertNunavut: "82.51087490317595, -62.514568080157254",
   };
   const placeKey =
     Object.keys(zipcodeObject)[
@@ -33,7 +39,7 @@ const getWeatherData = async () => {
     method: "GET",
     url: `http://api.weatherapi.com/v1/forecast.json?key=${
       import.meta.env.VITE_WEATHER_API_KEY
-    }&q=${zipcodeObject.tamdjert}&aqi=yes&days=1&hour=1`,
+    }&q=${zipcodeObject.alertNunavut}&aqi=yes&days=1&hour=1`,
   };
   let res;
   try {

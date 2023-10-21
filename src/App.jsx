@@ -8,17 +8,21 @@ import { getAscii } from "./functions/asciiFunctions";
 import { getWeatherData } from "./functions/getWeatherData";
 import { testWeatherData } from "../testWeatherData";
 import "./App.css";
+import { writeToFile } from "./functions/writeToFile";
+
+var randomIndex = Math.round(Math.random() * (testWeatherData.length - 1));
 
 class Instrument {
   constructor() {
     this.synth = new Tone.MonoSynth({
       envelope: {
-        attack: 0.1,
+        attack: 0.2,
         attackCurve: "exponential",
-        decayCurve: "linear",
+        decayCurve: "exponential",
         sustain: 0.1,
         decay: 0.1,
       },
+      portamento: 0.01,
     }).toDestination();
   }
 
@@ -55,15 +59,19 @@ const normalize = (x, xRange, newRange) => {
   const res = a + ((x - minX) * (b - a)) / (maxX - minX);
   return res;
 };
-
-const weatherData =
-  testWeatherData[Math.round(Math.random() * (testWeatherData.length - 1))];
+const lowFreq = 220;
+const hiFreq = 440;
+const weatherData = testWeatherData[randomIndex];
 const asciiPool = "@B0OQ#*qdoc/|()1{}[]I?i!l-_+~<>;:,\"^`'. ".split("");
-const visFactor = Math.round(
-  normalize(weatherData.current.vis_km, [20, 0], [1, 5])
+const visFactor = Math.floor(
+  normalize(weatherData.current.cloud, [0, 100], [0, asciiPool.length])
 );
-const asciiValues = asciiPool.filter((x, i) => i % visFactor === 0);
-const tempo = normalize(weatherData.current.temp_c, [-60, 60], [1, 12]);
+// const asciiValues = asciiPool.slice(visFactor, 40);
+const nearestFreqVal =
+  Math.round(normalize(weatherData.current.uv, [1, 7], [1, 7])) *
+  (1 / weatherData.current.uv);
+const asciiValues = asciiPool;
+const tempo = normalize(weatherData.current.temp_c, [-60, 60], [30, 1]);
 // const tempo = 9;
 // const width = 600;
 const width = Math.round(
@@ -81,16 +89,21 @@ const height = Math.round(
     [10, 80]
   )
 );
+const pixelFactor = normalize(weatherData.current.cloud, [0, 100], [1, 4]);
 console.log("manipulated data: ", {
+  location: weatherData.location.name,
   visibility: weatherData.current.vis_km,
+  // cloud: weatherData.current.cloud,
+  cloud: weatherData.current.cloud,
+  uv: weatherData.current.uv,
   visFactor,
   weatherData,
   asciiValues,
   width,
   height,
   tempo,
+  pixelFactor,
 });
-const pixelFactor = 1; // better way to do this directly in getUserMedia
 // const dbRange = [-140, -48];
 const synths = buildInstruments(height);
 
@@ -108,26 +121,26 @@ function App() {
       .catch((err) => console.log("err! ", err));
     // get weather data
     // getWeatherData()
-    //   .then((res) => setWeatherData(res))
+    //   .then((res) => console.log("weather: ", res.data))
     //   .catch((err) => console.log("err getting weather: ", err));
   }, []);
-
   const handleCapture = () => {
     capture(pixelFactor);
     getAscii(width, height, asciiValues)
       .then((res) => {
         setAscii(res);
+        // writeToFile(randomIndex, res);
       })
       .catch((err) => console.log("err in app: ", err));
   };
-  const handleImages = (num) => {
-    capture(pixelFactor, num);
-    getAscii(width, height, asciiValues)
-      .then((res) => {
-        setAscii(res);
-      })
-      .catch((err) => console.log("err in app: ", err));
-  };
+  // const handleImages = (num) => {
+  //   capture(pixelFactor, num);
+  //   getAscii(width, height, asciiValues)
+  //     .then((res) => {
+  //       setAscii(res);
+  //     })
+  //     .catch((err) => console.log("err in app: ", err));
+  // };
   return (
     <div>
       <Button
@@ -135,30 +148,18 @@ function App() {
           handleCapture(); // immediately triggers first image
           setInterval(() => {
             handleCapture();
-          }, tempo * 1000);
+          }, tempo * 1.1 * 500);
         }}
       >
         Capture
       </Button>
-      <Button
-        onClick={() => {
-          let count = 0;
-          handleImages(count); // immediately triggers first image
-          setInterval(() => {
-            count++;
-            handleImages(count);
-          }, tempo * 1000);
-        }}
-      >
-        IMAGE
-      </Button>
-      <Button
+      {/* <Button
         onClick={() => {
           stop(instruments.current, globalTransport);
         }}
       >
         STOP
-      </Button>
+      </Button> */}
       <textarea
         id="textarea_main"
         onChange={() => {}}
@@ -182,6 +183,9 @@ function App() {
         instruments={instruments.current}
         globalTransport={globalTransport}
         handleCapture={handleCapture}
+        nearestFreqVal={nearestFreqVal}
+        lowFreq={lowFreq}
+        hiFreq={hiFreq}
       />
     </div>
   );

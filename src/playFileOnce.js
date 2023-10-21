@@ -19,7 +19,8 @@ export function playFileOnce(
   lowFreq,
   hiFreq,
   tempo,
-  contextInstruments
+  contextInstruments,
+  nearestFreqVal
 ) {
   // get width
   let width = file.split("\n")[0].length;
@@ -43,9 +44,11 @@ export function playFileOnce(
     const returnObj = { 0: lf };
     const hfZero = hf - lf;
     for (let i = 1; i < length; i++) {
-      const ratioIncrease = returnObj[i - 1] * 1.05945946;
+      // const ratioIncrease = returnObj[i - 1] * 1.05945946;
       // const ratioIncrease = returnObj[i - 1] + length / (hf - lf);
-      returnObj[i] = ratioIncrease;
+      const ratioIncrease = returnObj[i - 1] + hfZero / length;
+      returnObj[i] =
+        Math.round(ratioIncrease / nearestFreqVal) * nearestFreqVal;
     }
     return returnObj;
   }
@@ -61,17 +64,20 @@ export function playFileOnce(
       }
       sampleCount--;
       if (sampleCount === 0) {
+        console.log("done");
+        // trigger recapture
         return;
       }
       return setTimeout(() => {
         playLoop(sampleCount - 1);
-      }, ((tempo + 1) * 1000) / width); // larger increments to make seamless loop
+      }, (tempo * 1000) / width); // larger increments to make seamless loop
     };
     playLoop(sampleCount);
   }
   const matrix = convertToMatrix(file);
   const pitchMap = createPitchMap(matrix);
   const pitches = createNormalizedValuesObject(lowFreq, hiFreq, matrix.length);
+  console.log("pitches: ", pitches);
   playImage(matrix.length, pitchMap, pitches, contextInstruments);
 }
 
