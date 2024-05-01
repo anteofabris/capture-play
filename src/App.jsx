@@ -16,13 +16,13 @@ class Instrument {
   constructor() {
     this.synth = new Tone.MonoSynth({
       envelope: {
-        attack: 0.2,
-        attackCurve: "exponential",
-        decayCurve: "exponential",
+        attack: 0.1,
+        attackCurve: "linear",
+        decayCurve: "linear",
         sustain: 0.1,
-        decay: 0.1,
+        decay: 0,
       },
-      portamento: 0.01,
+      portamento: 0.1,
     }).toDestination();
   }
 
@@ -57,6 +57,9 @@ const normalize = (x, xRange, newRange) => {
   const minX = xRange[0];
   const maxX = xRange[1];
   const res = a + ((x - minX) * (b - a)) / (maxX - minX);
+  console.log("normalizing: ", x, xRange, newRange, "res", res);
+  // return res rounded
+  const resRounded = Math.round(res) % (res - 100);
   return res;
 };
 const lowFreq = 220;
