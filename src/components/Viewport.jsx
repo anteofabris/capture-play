@@ -4,6 +4,7 @@ import { playFilePattern } from "../playFilePattern";
 import { playFileOnce } from "../playFileOnce";
 import Canvas from "./Canvas";
 import { useEffect } from "react";
+import door from "../assets/wavesCrash4.png";
 
 const Viewport = ({
   stream,
@@ -15,12 +16,19 @@ const Viewport = ({
   tempo,
   nearestFreqVal,
   lowFreq,
-  hiFreq
+  hiFreq,
 }) => {
-
   useEffect(() => {
     if (ascii !== "")
-      playFileOnce(asciiValues, ascii, lowFreq, hiFreq, tempo, instruments, nearestFreqVal); // light/dark reverse asciiValues
+      playFileOnce(
+        asciiValues,
+        ascii,
+        lowFreq,
+        hiFreq,
+        tempo,
+        instruments,
+        nearestFreqVal
+      ); // light/dark reverse asciiValues
   }, [ascii]);
 
   if (stream) {
@@ -39,7 +47,13 @@ const Viewport = ({
         style={{}}
       />
       <canvas id="canvas_main" width={width} height={height} style={{}} />
-      <img id="img_main" width={width} height={height} style={{}} />
+      <img
+        id="static_test"
+        width={width}
+        height={height}
+        style={{}}
+        src={door}
+      />
     </Container>
   );
 };

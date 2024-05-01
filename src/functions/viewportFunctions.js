@@ -30,26 +30,29 @@ const init = async (width, height) => {
   }
 };
 const capture = (pixelFactor, num) => {
+  console.log('capture......')
   const canvas = document.getElementById("canvas_main");
-  const video = document.getElementById("video_main");
-  const img = document.getElementById("img_main");
-  canvas.width = video.videoWidth;
-  canvas.height = video.videoHeight;
-  console.log * ("w & h", video.videoWidth, video.videoHeight);
+  // const video = document.getElementById("video_main");
+  const video = document.getElementById("static_test");
+  // const img = document.getElementById("img_main");
+  const img = document.getElementById("static_test");
+  canvas.width = video.width;
+  canvas.height = video.height;
+  console.log("w & h", video.width, video.height);
   canvas
     .getContext("2d")
     .drawImage(
       video,
       0,
       0,
-      video.videoWidth / pixelFactor,
-      video.videoHeight / pixelFactor
+      video.width / pixelFactor,
+      video.height / pixelFactor
     );
 
-  canvas.toBlob((blob) => {
-    img.src = window.URL.createObjectURL(blob);
-  });
-  img.src = canvas.toDataURL("image/png");
+  // canvas.toBlob((blob) => {
+  //   img.src = window.URL.createObjectURL(blob);
+  // });
+  // img.src = canvas.toDataURL("image/png");
 
   return img.src;
 };

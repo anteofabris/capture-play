@@ -76,7 +76,7 @@ const tempo = normalize(weatherData.current.temp_c, [-60, 60], [30, 1]);
 // const width = 600;
 const width = Math.round(
   normalize(
-    weatherData.forecast.forecastday[0].day.maxtemp_f,
+    140,
     [-76, 140],
     [50, 200]
   )
@@ -84,12 +84,12 @@ const width = Math.round(
 // const height = 80;
 const height = Math.round(
   normalize(
-    weatherData.forecast.forecastday[0].day.mintemp_f,
+    140,
     [-76, 140],
     [10, 80]
   )
 );
-const pixelFactor = normalize(weatherData.current.cloud, [0, 100], [1, 4]);
+const pixelFactor = normalize(0, [0, 100], [1, 4]);
 console.log("manipulated data: ", {
   location: weatherData.location.name,
   visibility: weatherData.current.vis_km,
