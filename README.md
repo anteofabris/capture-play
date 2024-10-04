@@ -1,5 +1,5 @@
 # capture-play
-This app records images from your webcam, turns the image into ASCII values, displays the image as an ASCII representation, and plays the images on a pictosonographone (a spectral image-to-sonograph synthesizer)
+This app records images from your webcam, turns the images into ASCII values, displays the images as ASCII representations, and plays the images on a pictosonographone (a spectral image-to-sonograph synthesizer)
 
 It was built using viteJS. To explore it, clone the repo and run:
 
